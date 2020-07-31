@@ -1,0 +1,25 @@
+{
+    "name": "setu-npm-upi-deep-link",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/setu.js",
+    "scripts": {
+        "start": "node src/setu.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@gitlab.com/setu-lobby/setu-npm-upi-deep-link.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://gitlab.com/setu-lobby/setu-npm-upi-deep-link/issues"
+    },
+    "homepage": "https://gitlab.com/setu-lobby/setu-npm-upi-deep-link#readme",
+    "dependencies": {
+        "axios": "^0.19.2",
+        "jsonwebtoken": "^8.5.1",
+        "uuid": "^8.3.0"
+    }
+}
