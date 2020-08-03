@@ -56,6 +56,26 @@ class Setu {
             );
         }
     };
+
+    triggerMockPayment = (body) => {
+        if (this.checkIfValuesExist() && this.mode === 'SANDBOX') {
+            return requestHelper.post(
+                this.endpoints['mock-payment'],
+                this.secrets,
+                body
+            );
+        }
+    };
+
+    retreiveReports = (body) => {
+        if (this.checkIfValuesExist()) {
+            return requestHelper.post(
+                this.endpoints['retreive-reports'],
+                this.secrets,
+                body
+            );
+        }
+    };
 }
 
 module.exports = Setu;
