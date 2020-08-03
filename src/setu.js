@@ -1,4 +1,5 @@
 // Required helpers
+const bodyHelper = require('./helpers/body');
 const requestHelper = require('./helpers/request');
 const { endpointHelper } = require('./helpers/endpoint');
 
@@ -42,7 +43,7 @@ class Setu {
             return requestHelper.post(
                 this.endpoints['payment-link'],
                 this.secrets,
-                body
+                bodyHelper.createPaymentLink(body)
             );
         }
     };
@@ -62,7 +63,7 @@ class Setu {
             return requestHelper.post(
                 this.endpoints['mock-payment'],
                 this.secrets,
-                body
+                bodyHelper.triggerMockPayment(body)
             );
         }
     };

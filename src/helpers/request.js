@@ -8,24 +8,26 @@ const authHelper = require('./auth');
 var requestHelper = {};
 
 // GET helper
-requestHelper.get = (url, secrets, platformBillId) => {
-    return axios
-        .get(
+requestHelper.get = async (url, secrets, platformBillId) => {
+    try {
+        let { data } = await axios.get(
             `${url}/${platformBillId}`,
             authHelper.generateRequiredHeaders(
                 secrets.schemeId,
                 secrets.jwtSecret,
                 secrets.setuProductInstanceId
             )
-        )
-        .then(({ response }) => response.data)
-        .catch(({ response }) => response.data);
+        );
+        return data;
+    } catch ({ response }) {
+        return response.data;
+    }
 };
 
 // POST helper
-requestHelper.post = (url, secrets, body) => {
-    return axios
-        .post(
+requestHelper.post = async (url, secrets, body) => {
+    try {
+        let { data } = await axios.post(
             url,
             body,
             authHelper.generateRequiredHeaders(
@@ -33,9 +35,12 @@ requestHelper.post = (url, secrets, body) => {
                 secrets.jwtSecret,
                 secrets.setuProductInstanceId
             )
-        )
-        .then(({ response }) => response.data)
-        .catch(({ response }) => response.data);
+        );
+
+        return data;
+    } catch ({ response }) {
+        return response.data;
+    }
 };
 
 module.exports = requestHelper;
