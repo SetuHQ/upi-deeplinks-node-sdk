@@ -20,7 +20,7 @@ bodyHelper.createPaymentLink = ({
     return {
         amount: {
             currencyCode: 'INR',
-            value: amountValue / 100
+            value: amountValue
         },
         amountExactness: amountExactness || 'EXACT',
         billerBillID: billerBillID,
