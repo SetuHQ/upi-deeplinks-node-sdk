@@ -10,7 +10,7 @@ The following functions are supported
 ## Installation
 
 ```
-npm install @setuapis/upi-deep-link
+npm install @setu/upi-deep-link
 ```
 
 ## Configuration
