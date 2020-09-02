@@ -36,6 +36,8 @@ let paymentLinkBody = {
     amountExactness: String,
     billerBillID: String,
     payeeName: String,
+    settlementObject: Object, // Optional
+    validationRulesObject: Object // Optional
 };
 
 let data = await setu.createPaymentLink(paymentLinkBody);

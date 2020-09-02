@@ -12,12 +12,14 @@ bodyHelper.createPaymentLink = ({
     billerBillID,
     payeeName,
     expiresInDays,
-    amountExactness
+    amountExactness,
+    settlementObject = null,
+    validationRulesObject = null
 }) => {
     let dueAndExpiryDate = dayjs().add(expiresInDays, 'day');
     dueAndExpiryDate = dueAndExpiryDate.utc().format();
 
-    return {
+    let body = {
         amount: {
             currencyCode: 'INR',
             value: amountValue
@@ -28,6 +30,16 @@ bodyHelper.createPaymentLink = ({
         expiryDate: dueAndExpiryDate,
         name: payeeName
     };
+
+    if (!settlementObject) {
+        body.settlement = settlementObject;
+    }
+
+    if (!validationRulesObject) {
+        body.validationRules = validationRulesObject;
+    }
+
+    return body;
 };
 
 bodyHelper.triggerMockPayment = ({ amountValue, upiId }) => {
