@@ -1,9 +1,5 @@
-// Required libraries
-const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-
-// Required settings
-dayjs.extend(utc);
+// Required helpers
+const commonHelper = require('./common');
 
 var bodyHelper = {};
 
@@ -11,33 +7,30 @@ bodyHelper.createPaymentLink = ({
     amountValue,
     billerBillID,
     payeeName,
-    expiresInDays,
+    dueDate,
+    expiryDate,
     amountExactness,
     settlementObject = null,
     validationRulesObject = null
 }) => {
-    let dueAndExpiryDate = dayjs().add(expiresInDays, 'day');
-    dueAndExpiryDate = dueAndExpiryDate.utc().format();
-
     let body = {
         amount: {
             currencyCode: 'INR',
             value: amountValue
         },
-        amountExactness: amountExactness || 'EXACT',
-        billerBillID: billerBillID,
-        dueDate: dueAndExpiryDate,
-        expiryDate: dueAndExpiryDate,
-        name: payeeName
+        amountExactness: amountExactness,
+        billerBillID: billerBillID
     };
 
-    if (!settlementObject) {
-        body.settlement = settlementObject;
-    }
-
-    if (!validationRulesObject) {
-        body.validationRules = validationRulesObject;
-    }
+    body = commonHelper.addIfExists('dueDate', dueDate, body);
+    body = commonHelper.addIfExists('expiryDate', expiryDate, body);
+    body = commonHelper.addIfExists('payeeName', payeeName, body);
+    body = commonHelper.addIfExists('settlement', settlementObject, body);
+    body = commonHelper.addIfExists(
+        'validationRules',
+        validationRulesObject,
+        body
+    );
 
     return body;
 };

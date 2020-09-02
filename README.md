@@ -10,13 +10,13 @@ The following functions are supported
 ## Installation
 
 ```
-npm install @setu/upi-deep-link
+npm install @setu/upi-deep-links
 ```
 
 ## Configuration
 
 ```
-const SetuUPIDeepLink = require("@setuapis/upi-deep-link")
+const SetuUPIDeepLink = require("@setu/upi-deep-links")
 
 let setu = new SetuUPIDeepLink({
     schemeId: "YOUR SCHEME ID",
@@ -31,11 +31,12 @@ let setu = new SetuUPIDeepLink({
 
 ```
 let paymentLinkBody = {
-    expiresInDays: Number,
     amountValue: Number,
-    amountExactness: String,
     billerBillID: String,
-    payeeName: String,
+    amountExactness: String,
+    dueDate: String, // Optional
+    payeeName: String, // Optional
+    expiryDate: String, // Optional
     settlementObject: Object, // Optional
     validationRulesObject: Object // Optional
 };
