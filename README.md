@@ -2,6 +2,8 @@
 
 This package helps you work with [Setu's](https://setu.co) deeplink APIs.
 
+[![codecov](https://codecov.io/gh/SetuHQ/npm-upi-deep-links/branch/master/graph/badge.svg)](https://codecov.io/gh/SetuHQ/npm-upi-deep-links)
+
 The following functions are supported
 
 1. Generate UPI payment link
