@@ -8,15 +8,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/setu-lobby/npm-upi-deep-link.git"
+        "url": "git+ssh://git@github.com/SetuHQ/npm-upi-deep-link.git"
     },
     "keywords": [],
     "author": "Nithin Kashyap <nithin@setu.co>",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/setu-lobby/npm-upi-deep-link/issues"
+        "url": "https://github.com/SetuHQ/npm-upi-deep-link/issues"
     },
-    "homepage": "https://github.com/setu-lobby/npm-upi-deep-link#readme",
+    "homepage": "https://github.com/SetuHQ/npm-upi-deep-link#readme",
     "dependencies": {
         "axios": "^0.19.2",
         "dayjs": "^1.8.31",
