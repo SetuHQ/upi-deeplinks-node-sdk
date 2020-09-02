@@ -10,9 +10,12 @@
         "type": "git",
         "url": "git+ssh://git@github.com/SetuHQ/npm-upi-deep-links.git"
     },
-    "keywords": [],
+    "keywords": [
+        "setu",
+        "upi"
+    ],
     "author": "Nithin Kashyap <nithin@setu.co>",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/SetuHQ/npm-upi-deep-links/issues"
     },

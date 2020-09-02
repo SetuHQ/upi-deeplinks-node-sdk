@@ -10,8 +10,8 @@ bodyHelper.createPaymentLink = ({
     dueDate,
     expiryDate,
     amountExactness,
-    settlementObject = null,
-    validationRulesObject = null
+    settlement,
+    validationRules
 }) => {
     let body = {
         amount: {
@@ -25,12 +25,8 @@ bodyHelper.createPaymentLink = ({
     body = commonHelper.addIfExists('dueDate', dueDate, body);
     body = commonHelper.addIfExists('expiryDate', expiryDate, body);
     body = commonHelper.addIfExists('payeeName', payeeName, body);
-    body = commonHelper.addIfExists('settlement', settlementObject, body);
-    body = commonHelper.addIfExists(
-        'validationRules',
-        validationRulesObject,
-        body
-    );
+    body = commonHelper.addIfExists('settlement', settlement, body);
+    body = commonHelper.addIfExists('validationRules', validationRules, body);
 
     return body;
 };
