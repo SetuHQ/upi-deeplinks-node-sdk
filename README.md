@@ -25,6 +25,7 @@ let setu = new SetuUPIDeepLink({
     schemeId: "YOUR SCHEME ID",
     jwtSecret: "YOUR JWT SECRET",
     setuProductInstanceId: "YOUR PRODUCT INSTANCE ID",
+    setuProductInstanceId: "PRODUCTION | SANDBOX"
 });
 ```
 
