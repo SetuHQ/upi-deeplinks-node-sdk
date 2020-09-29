@@ -3,7 +3,6 @@
 This package helps you work with [Setu's](https://setu.co) deeplink APIs.
 
 [![version](https://img.shields.io/npm/v/@setu/upi-deep-links)](https://www.npmjs.org/package/@setu/upi-deep-links)
-[![codecov](https://codecov.io/gh/SetuHQ/npm-upi-deep-links/branch/master/graph/badge.svg)](https://codecov.io/gh/SetuHQ/npm-upi-deep-links)
 
 The following functions are supported
 
