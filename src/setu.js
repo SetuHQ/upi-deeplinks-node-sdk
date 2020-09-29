@@ -4,11 +4,11 @@ const requestHelper = require('./helpers/request');
 const { endpointHelper } = require('./helpers/endpoint');
 
 class Setu {
-    secrets = {};
-    endpoints = {};
-    mode = 'SANDBOX';
 
     constructor(data) {
+        this.secrets = {};
+        this.endpoints = {};
+
         this.secrets.schemeId = data.schemeId || null;
         this.secrets.jwtSecret = data.jwtSecret || null;
         this.secrets.setuProductInstanceId = data.setuProductInstanceId || null;
@@ -16,9 +16,11 @@ class Setu {
         this.endpoints = endpointHelper(data.mode);
     }
 
-    sayHi = () => console.log('Setu says Hi!');
+    sayHi() {
+      console.log('Setu says Hi!');
+    }
 
-    checkIfValuesExist = () => {
+    checkIfValuesExist() {
         if (
             !this.secrets.schemeId ||
             !this.secrets.jwtSecret ||
@@ -30,15 +32,15 @@ class Setu {
         }
     };
 
-    displaySetValues = () => {
+    displaySetValues() {
         if (this.checkIfValuesExist()) {
-            console.info(JSON.stringify(this.secrets));
+            console.info(JSON.stringify({...this.secrets, ...this.endpoints}));
         } else {
             console.info('Required values are not set');
         }
     };
 
-    createPaymentLink = (body) => {
+    createPaymentLink(body) {
         if (this.checkIfValuesExist()) {
             return requestHelper.post(
                 this.endpoints['payment-link'],
@@ -48,7 +50,7 @@ class Setu {
         }
     };
 
-    checkPaymentStatus = (platformBillID = null) => {
+    checkPaymentStatus(platformBillID = null) {
         if (this.checkIfValuesExist() && !!platformBillID) {
             return requestHelper.get(
                 this.endpoints['payment-link'],
@@ -58,7 +60,7 @@ class Setu {
         }
     };
 
-    triggerMockPayment = (body) => {
+    triggerMockPayment(body) {
         if (this.checkIfValuesExist() && this.mode === 'SANDBOX') {
             return requestHelper.post(
                 this.endpoints['mock-payment'],
@@ -68,7 +70,7 @@ class Setu {
         }
     };
 
-    retreiveReports = (body) => {
+    retreiveReports(body) {
         if (this.checkIfValuesExist()) {
             return requestHelper.post(
                 this.endpoints['retreive-reports'],
