@@ -21,9 +21,8 @@
   },
   "homepage": "https://github.com/SetuHQ/npm-upi-deep-links#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "jsonwebtoken": "^8.5.1",
     "uuid": "^8.3.0"
-  },
-  "devDependencies": {}
+  }
 }
