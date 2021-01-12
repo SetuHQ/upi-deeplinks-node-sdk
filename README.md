@@ -1,10 +1,10 @@
 # Setu
 
-This package helps you work with [Setu's](https://setu.co) deeplink APIs.
+This package helps you use [Setu’s](https://setu.co/payments/upi-deeplinks) [DeepLink](https://docs.setu.co/collect/biller/upi-deep-links) APIs.
 
 [![version](https://img.shields.io/npm/v/@setu/upi-deep-links)](https://www.npmjs.org/package/@setu/upi-deep-links)
 
-The following functions are supported
+The following functions are supported—
 
 1. Generate UPI payment link
 2. Check status of UPI payment link
@@ -13,7 +13,12 @@ The following functions are supported
 
 ```
 npm install @setu/upi-deep-links
+
+(OR)
+
+yarn add @setu/upi-deep-links
 ```
+---
 
 ## Configuration
 
@@ -27,6 +32,7 @@ let setu = new SetuUPIDeepLink({
     setuProductInstanceId: "PRODUCTION | SANDBOX"
 });
 ```
+---
 
 ## Usage
 
@@ -46,13 +52,15 @@ let paymentLinkBody = {
 
 let data = await setu.createPaymentLink(paymentLinkBody);
 ```
+---
 
 ### Check status of UPI payment link
 
 ```
 let data = await setu.checkPaymentStatus("platformBillID");
 ```
+---
 
 ## License
 
-MIT
+MIT. Have at it.
