@@ -1,5 +1,5 @@
 const productionUrl = 'https://prod.setu.co/api';
-const sandboxUrl = 'https://sandbox.setu.co/api';
+const sandboxUrl = 'https://uat.setu.co/api';
 
 module.exports = {
     endpointHelper: (mode = 'SANDBOX') => {
