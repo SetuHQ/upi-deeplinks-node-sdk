@@ -6,7 +6,7 @@ const generateJWT = (schemeId, jwtSecret) => {
     return jwt.sign(
         {
             aud: schemeId,
-            iat: Math.floor(Date.now / 1000),
+            iat: Math.floor(Date.now() / 1000),
             jti: uuid.v4()
         },
         jwtSecret
