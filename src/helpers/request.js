@@ -10,14 +10,19 @@ var requestHelper = {};
 // GET helper
 requestHelper.get = async (url, secrets, platformBillId) => {
     try {
-        let { data } = await axios.get(
-            `${url}/${platformBillId}`,
-            authHelper.generateRequiredHeaders(
-                secrets.schemeId,
-                secrets.jwtSecret,
-                secrets.setuProductInstanceId
-            )
+        const {headers} = await authHelper.generateRequiredHeaders(
+            secrets.schemeId,
+            secrets.jwtSecret,
+            secrets.setuProductInstanceId,
+            secrets.setuBaseUrl,
+            secrets.authType
         );
+        var config = {
+            method: 'get',
+            url: `${url}/${platformBillId}`,
+            headers: headers
+        };
+        let { data } = await axios(config);
         return data;
     } catch ({ response }) {
         return response.data;
@@ -27,16 +32,20 @@ requestHelper.get = async (url, secrets, platformBillId) => {
 // POST helper
 requestHelper.post = async (url, secrets, body) => {
     try {
-        let { data } = await axios.post(
-            url,
-            body,
-            authHelper.generateRequiredHeaders(
-                secrets.schemeId,
-                secrets.jwtSecret,
-                secrets.setuProductInstanceId
-            )
+        const { headers } = await authHelper.generateRequiredHeaders(
+            secrets.schemeId,
+            secrets.jwtSecret,
+            secrets.setuProductInstanceId,
+            secrets.setuBaseUrl,
+            secrets.authType
         );
-
+        var config = {
+            method: 'post',
+            url: url,
+            headers: headers,
+            data: body
+        };
+        let { data } = await axios(config);
         return data;
     } catch ({ response }) {
         return response.data;

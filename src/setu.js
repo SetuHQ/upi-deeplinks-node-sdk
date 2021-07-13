@@ -4,16 +4,17 @@ const requestHelper = require('./helpers/request');
 const { endpointHelper } = require('./helpers/endpoint');
 
 class Setu {
-
     constructor(data) {
         this.secrets = {};
         this.endpoints = {};
-
         this.secrets.schemeId = data.schemeId || null;
         this.secrets.jwtSecret = data.jwtSecret || null;
+        this.secrets.authType = data.authType || 'JWT'; // OAuth // JWT
         this.secrets.setuProductInstanceId = data.setuProductInstanceId || null;
         this.mode = data.mode || 'SANDBOX';
-        this.endpoints = endpointHelper(data.mode);
+        const version2 = this.secrets.authType != 'JWT';
+        this.endpoints = endpointHelper(data.mode, version2);
+        this.secrets.setuBaseUrl = this.endpoints['baseUrl'];
     }
 
     sayHi() {
