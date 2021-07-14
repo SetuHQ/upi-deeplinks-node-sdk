@@ -30,7 +30,7 @@ let setu = new SetuUPIDeepLink({
     jwtSecret: "YOUR JWT SECRET",
     setuProductInstanceId: "YOUR PRODUCT INSTANCE ID",
     mode: "PRODUCTION | SANDBOX",
-    authType: "OAuth | JWT"
+    authType: "OAUTH | JWT"
 });
 ```
 ---
