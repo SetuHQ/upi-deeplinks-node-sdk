@@ -83,45 +83,4 @@ class Setu {
     };
 }
 
-
-const prid = "673421395987793445";
-const clid = '94d5273d-cc52-4410-abfc-e307fb9af709';
-const sec = '215f4044-eaf3-49b0-9425-3fd13429dfc3';
-
-async function test(){
-    let setu = new Setu({
-        schemeId: clid,
-        jwtSecret: sec,
-        setuProductInstanceId: prid,
-        mode: "SANDBOX"
-    });
-    
-    let paymentLinkBody = {
-        "amountValue":100,
-        "billerBillID": "abc",
-        "amountExactness": "ANY"
-    };
-    let mockPayment = {
-        "amountValue":89,
-        "upiId": "setu673872470574368369@kaypay",
-        "amountExactness": "ANY"
-    };
-    // let data = await setu.triggerMockPayment(mockPayment);
-    // let data = await setu.checkPaymentStatus("673872823340500596");
-    let reportData = {
-        "pagination": {
-            "cursor": "",
-            "limit": 100
-        },
-        "productIds": [
-            "673421395987793445"
-        ],
-        "productInstanceIDOfReport":"673421395987793445"
-    }
-    let data = await setu.retreiveReports(reportData);
-    
-    console.log("data",data);
-}
-test();
-
-// module.exports = Setu;s
+module.exports = Setu;
