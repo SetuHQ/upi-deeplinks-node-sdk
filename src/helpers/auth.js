@@ -1,6 +1,7 @@
 // Required libraries
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
+const axios = require('axios').default;
 
 const generateJWT = (schemeId, jwtSecret) => {
     return jwt.sign(
@@ -13,16 +14,36 @@ const generateJWT = (schemeId, jwtSecret) => {
     );
 };
 
+async function generateOAuth(schemeId, jwtSecret,url) {
+    url = url + "/auth/token"
+    const headers = {
+        'Content-Type': 'application/json',
+    }
+    const payload = {
+        "clientID": schemeId,
+        "secret": jwtSecret,
+    }
+    try {
+        const {data} = await axios.post(url,payload,headers);
+        return data.data.token;
+    } catch (error) {
+        throw error;
+    }
+}
+
 var authHelper = {};
 
-authHelper.generateRequiredHeaders = (
+authHelper.generateRequiredHeaders = async (
     schemeId,
     jwtSecret,
-    setuProductInstanceId
+    setuProductInstanceId,
+    setuBaseUrl,
+    authType="JWT"
 ) => {
+    const token = authType =="JWT" ? generateJWT(schemeId, jwtSecret): await  generateOAuth(schemeId,jwtSecret,setuBaseUrl)
     return {
         headers: {
-            Authorization: 'Bearer ' + generateJWT(schemeId, jwtSecret),
+            Authorization: 'Bearer ' + token,
             'X-Setu-Product-Instance-ID': setuProductInstanceId
         }
     };

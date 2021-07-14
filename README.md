@@ -29,7 +29,8 @@ let setu = new SetuUPIDeepLink({
     schemeId: "YOUR SCHEME ID",
     jwtSecret: "YOUR JWT SECRET",
     setuProductInstanceId: "YOUR PRODUCT INSTANCE ID",
-    mode: "PRODUCTION | SANDBOX"
+    mode: "PRODUCTION | SANDBOX",
+    authType: "OAUTH | JWT"
 });
 ```
 ---
