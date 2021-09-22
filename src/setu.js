@@ -50,6 +50,15 @@ class Setu {
         }
     };
 
+    setBillExpiry(platformBillID=null) {
+        if (this.checkIfValuesExist()) {
+            return requestHelper.post(
+                this.endpoints['bill-expiry']+platformBillID+'/expire',
+                this.secrets
+            );
+        }
+    };
+
     checkPaymentStatus(platformBillID = null) {
         if (this.checkIfValuesExist() && !!platformBillID) {
             return requestHelper.get(

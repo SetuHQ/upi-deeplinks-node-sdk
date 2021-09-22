@@ -12,7 +12,8 @@ module.exports = {
             reports: url + '/reports',
             'payment-link': url + '/payment-links',
             'mock-payment': url + '/triggers/funds/addCredit',
-            'retreive-reports': url + '/reports'
+            'retreive-reports': url + '/reports',
+            'bill-expiry':url + '/utilities/bills/',
         };
     }
 };
