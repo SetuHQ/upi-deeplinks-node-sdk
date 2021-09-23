@@ -50,7 +50,7 @@ class Setu {
         }
     };
 
-    setBillExpiry(platformBillID=null) {
+    setBillExpiry(platformBillID = null) {
         if (this.checkIfValuesExist() && !!platformBillID) {
             return requestHelper.post(
                 this.endpoints['bill-expiry'] + `/${platformBillID}/expire`,
