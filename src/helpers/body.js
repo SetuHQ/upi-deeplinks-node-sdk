@@ -11,7 +11,8 @@ bodyHelper.createPaymentLink = ({
     expiryDate,
     amountExactness,
     settlement,
-    validationRules
+    validationRules,
+    transactionNote,
 }) => {
     let body = {
         amount: {
@@ -27,7 +28,7 @@ bodyHelper.createPaymentLink = ({
     body = commonHelper.addIfExists('payeeName', payeeName, body);
     body = commonHelper.addIfExists('settlement', settlement, body);
     body = commonHelper.addIfExists('validationRules', validationRules, body);
-
+    body = commonHelper.addIfExists('transactionNote', transactionNote, body);
     return body;
 };
 
