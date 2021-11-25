@@ -48,7 +48,8 @@ let paymentLinkBody = {
     payeeName: String, // Optional
     expiryDate: String, // Optional
     settlement: Object, // Optional
-    validationRules: Object // Optional
+    validationRules: Object, // Optional
+    transactionNote: String // Optional
 };
 
 let data = await setu.createPaymentLink(paymentLinkBody);
