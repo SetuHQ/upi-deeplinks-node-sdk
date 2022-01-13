@@ -1,11 +1,12 @@
-var commonHelper = {};
+const commonHelper = {};
 
 commonHelper.addIfExists = (name, value, body) => {
     if (value && name) {
-        let temp = {};
+        const temp = {};
         temp[name] = value;
         return { ...body, ...temp };
-    } else return body;
+    } 
+    return body;
 };
 
 module.exports = commonHelper;

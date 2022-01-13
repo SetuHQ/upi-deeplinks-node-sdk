@@ -5,7 +5,7 @@ const axios = require('axios').default;
 const authHelper = require('./auth');
 
 // Export object
-var requestHelper = {};
+const requestHelper = {};
 
 // GET helper
 requestHelper.get = async (url, secrets, platformBillId) => {
@@ -17,12 +17,12 @@ requestHelper.get = async (url, secrets, platformBillId) => {
             secrets.setuBaseUrl,
             secrets.authType
         );
-        var config = {
+        const config = {
             method: 'get',
             url: `${url}/${platformBillId}`,
             headers: headers
         };
-        let { data } = await axios(config);
+        const { data } = await axios(config);
         return data;
     } catch ({ response }) {
         return response.data;
@@ -39,13 +39,13 @@ requestHelper.post = async (url, secrets, body) => {
             secrets.setuBaseUrl,
             secrets.authType
         );
-        var config = {
+        const config = {
             method: 'post',
             url: url,
             headers: headers,
             data: body
         };
-        let { data } = await axios(config);
+        const { data } = await axios(config);
         return data;
     } catch ({ response }) {
         return response.data;

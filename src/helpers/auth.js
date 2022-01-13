@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 const axios = require('axios').default;
+const authHelper = {}
 
 const generateJWT = (schemeId, jwtSecret) => {
     return jwt.sign(
@@ -30,8 +31,6 @@ async function generateOAuth(schemeId, jwtSecret,url) {
         throw error;
     }
 }
-
-var authHelper = {};
 
 authHelper.generateRequiredHeaders = async (
     schemeId,

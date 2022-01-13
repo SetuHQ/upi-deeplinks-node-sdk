@@ -1,7 +1,6 @@
 // Required helpers
 const commonHelper = require('./common');
-
-var bodyHelper = {};
+const bodyHelper = {};
 
 bodyHelper.createPaymentLink = ({
     amountValue,
