@@ -16,11 +16,12 @@ export type CreatePaymentLinkParams = {
     readonly billerBillID: string;
     readonly amountExactness: AmountExactness;
     readonly payeeName?: string;
-    readonly dueDate?: string;
     readonly expiryDate?: string;
     readonly settlement?: Settlement;
     readonly validationRules?: ValidationRules;
     readonly transactionNote?: string;
+    readonly additionalInfo?: Record<string, string>;
+    readonly campaignID?: string;
 };
 
 export type CreatePaymentLinkResponse = SetuResponseBase & {

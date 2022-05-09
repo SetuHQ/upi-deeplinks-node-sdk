@@ -45,14 +45,14 @@ type FetchTokenResponseData = {
 
 /* Create Payment Link Types */
 export type CreatePaymentLinkData = {
-    readonly amount: Amount;
-    readonly amountExactness: AmountExactness;
-    readonly billerBillID: string;
-    readonly expiryDate?: string;
     readonly name?: string;
-    readonly settlement?: Settlement;
     readonly transactionNote?: string;
+    readonly amount: Amount;
+    readonly expiryDate?: string;
+    readonly billerBillID: string;
+    readonly amountExactness: AmountExactness;
     readonly validationRules?: ValidationRules;
+    readonly settlement?: Settlement;
     readonly additionalInfo?: Record<string, string>;
     readonly campaignID?: string;
 };
@@ -84,8 +84,8 @@ type Amount = {
 };
 
 export type ValidationRules = {
-    readonly amount: AmountValidation;
-    readonly sourceAccounts: SourceAccounts;
+    readonly amount?: AmountValidation;
+    readonly sourceAccounts?: SourceAccounts;
 };
 
 type AmountValidation = {
@@ -94,7 +94,7 @@ type AmountValidation = {
 };
 
 type SourceAccounts = {
-    readonly items: SourceAccountItem;
+    readonly items: readonly SourceAccountItem[];
 };
 
 type SourceAccountItem = {

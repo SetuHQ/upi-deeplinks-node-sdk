@@ -44,7 +44,6 @@ let paymentLinkBody = {
     amountValue: Number,
     billerBillID: String,
     amountExactness: String,
-    dueDate: String, // Optional
     payeeName: String, // Optional
     expiryDate: String, // Optional
     settlement: Object, // Optional

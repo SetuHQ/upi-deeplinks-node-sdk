@@ -6,12 +6,13 @@ const createPaymentLink = ({
     amountValue,
     billerBillID,
     payeeName,
-    dueDate,
     expiryDate,
     amountExactness,
     settlement,
     validationRules,
     transactionNote,
+    additionalInfo,
+    campaignID,
 }: CreatePaymentLinkParams): CreatePaymentLinkData => {
     return {
         amount: {
@@ -20,12 +21,13 @@ const createPaymentLink = ({
         },
         amountExactness: amountExactness,
         billerBillID: billerBillID,
-        ...(dueDate && { dueDate }),
         ...(expiryDate && { expiryDate }),
         ...(payeeName && { name: payeeName }),
         ...(settlement && { settlement }),
-        ...(validationRules && {}),
+        ...(validationRules && { validationRules }),
         ...(transactionNote && { transactionNote }),
+        ...(additionalInfo && { additionalInfo }),
+        ...(campaignID && { campaignID }),
     };
 };
 
