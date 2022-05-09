@@ -23,9 +23,9 @@ yarn add @setu/upi-deep-links
 ## Configuration
 
 ```
-const SetuUPIDeepLink = require("@setu/upi-deep-links")
+import { SetuUPIDeepLink } from "@setu/upi-deep-links";
 
-let setu = new SetuUPIDeepLink({
+let upiDL = SetuUPIDeepLink({
     schemeId: "YOUR SCHEME ID",
     jwtSecret: "YOUR JWT SECRET",
     setuProductInstanceId: "YOUR PRODUCT INSTANCE ID",
@@ -52,14 +52,14 @@ let paymentLinkBody = {
     transactionNote: String // Optional
 };
 
-let data = await setu.createPaymentLink(paymentLinkBody);
+let data = await upiDL.createPaymentLink(paymentLinkBody);
 ```
 ---
 
 ### Check status of UPI payment link
 
 ```
-let data = await setu.checkPaymentStatus("platformBillID");
+let data = await upiDL.checkPaymentStatus("platformBillID");
 ```
 ---
 
