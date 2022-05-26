@@ -1,8 +1,12 @@
 import {
+    BatchRefundStatusResponseData,
     CreatePaymentLinkResponseData,
+    Deduction,
     GetPaymentStatusResponseData,
+    InitiateRefundAmount,
+    InitiateRefundResponseData,
+    RefundResponseSuccessData,
     Settlement,
-    SetuResponseBase,
     TriggerMockPaymentResponseData,
     ValidationRules,
 } from "./helpers/types";
@@ -24,15 +28,6 @@ export type CreatePaymentLinkParams = {
     readonly campaignID?: string;
 };
 
-export type CreatePaymentLinkResponse = SetuResponseBase & {
-    readonly data: CreatePaymentLinkResponseData;
-};
-
-/* Get Payment Status */
-export type GetPaymentStatusResponse = SetuResponseBase & {
-    readonly data: GetPaymentStatusResponseData;
-};
-
 /* Trigger Mock Payment */
 export type TriggerMockPaymentParams = {
     readonly amountValue: number;
@@ -40,6 +35,24 @@ export type TriggerMockPaymentParams = {
     readonly platformBillID: string;
 };
 
-export type TriggerMockPaymentResponse = SetuResponseBase & {
-    readonly data: TriggerMockPaymentResponseData;
+/* Refund */
+export type InitiateRefundParams = {
+    readonly refunds: readonly RefundRequest[];
+};
+
+type RefundRequest = InitiateRefundAmount & {
+    readonly identifier: string;
+    readonly identifierType: "BILL_ID";
+    readonly deductions?: readonly Deduction[];
+};
+
+/* Global */
+export type SetuUPIDeepLinkInstance = {
+    readonly createPaymentLink: (body: CreatePaymentLinkParams) => Promise<CreatePaymentLinkResponseData>;
+    readonly getPaymentStatus: (platformBillID: string) => Promise<GetPaymentStatusResponseData>;
+    readonly expireBill: (platformBillID: string) => Promise<void>;
+    readonly initiateRefund: (body: InitiateRefundParams) => Promise<InitiateRefundResponseData>;
+    readonly getRefundBatchStatus: (batchID: string) => Promise<BatchRefundStatusResponseData>;
+    readonly getRefundStatus: (refundID: string) => Promise<RefundResponseSuccessData>;
+    readonly triggerMockPayment: (body: TriggerMockPaymentParams) => Promise<TriggerMockPaymentResponseData>;
 };
