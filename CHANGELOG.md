@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/SetuHQ/node-upi-deep-links/compare/v2.0.0...v2.1.0) (2022-05-26)
+
+
+### Features
+
+* Support Refund APIs ([39eb0d7](https://github.com/SetuHQ/node-upi-deep-links/commit/39eb0d7818264410b77e1d00cc563ee3aac82b93))
+
+
+### Bug Fixes
+
+* ensure refresh token happens as expected ([3a88e62](https://github.com/SetuHQ/node-upi-deep-links/commit/3a88e62bb7907c231944b9b7e0e44529d61c292e))
+
 ### [2.0.1](https://github.com/SetuHQ/node-upi-deep-links/compare/v2.0.0...v2.0.1) (2022-05-09)
 
 ## 2.0.0 (2022-05-09)
