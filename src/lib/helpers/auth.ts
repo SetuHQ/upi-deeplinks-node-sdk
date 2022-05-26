@@ -3,14 +3,13 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidV4 } from "uuid";
 
 import { getURLPath } from "./endpoint";
-import { API, FetchTokenResponse, SetuEnv } from "./types";
+import { API, FetchTokenResponseData, SetuEnv, SetuResponseBase } from "./types";
 
 export const getOAuthToken = async (mode: `${SetuEnv}`, clientID: string, secret: string): Promise<string> => {
-    const { data } = await axios.post<FetchTokenResponse>(getURLPath(mode, "OAUTH", API.FETCH_TOKEN), {
-        clientID,
-        secret: secret,
-    });
-
+    const { data } = await axios.post<SetuResponseBase<FetchTokenResponseData>>(
+        getURLPath(mode, "OAUTH", API.FETCH_TOKEN),
+        { clientID, secret: secret }
+    );
     return `Bearer ${data.data.token}`;
 };
 

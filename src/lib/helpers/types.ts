@@ -14,15 +14,36 @@ export enum AuthScheme {
 export enum API {
     FETCH_TOKEN = "/auth/token",
     PAYMENT_LINK_BASE = "/payment-links",
+    REFUND_BASE = "/refund",
     TRIGGER_MOCK_PAYMENT = "/triggers/funds/addCredit",
     EXPIRE_BILL = "/utilities/bills/%s/expire",
     REPORTS_BASE = "/reports",
 }
 
-export type SetuResponseBase = {
+export type SetuError = {
+    readonly code: string;
+    readonly detail: string;
+    readonly docURL: string;
+    readonly title: string;
+    readonly errors: readonly unknown[];
+    readonly traceID: string;
+};
+
+export type SetuResponseBase<T> = {
     readonly status: number;
     readonly success: boolean;
+    readonly error: SetuError;
+    readonly data: T;
 };
+
+export type BillStatus =
+    | "BILL_CREATED"
+    | "PAYMENT_SUCCESSFUL"
+    | "PAYMENT_FAILED"
+    | "CREDIT_RECEIVED"
+    | "SETTLEMENT_SUCCESSFUL"
+    | "SETTLEMENT_FAILED"
+    | "BILL_EXPIRED";
 
 /* Entry point */
 export type SetuUPIDeepLinkParams = {
@@ -34,11 +55,7 @@ export type SetuUPIDeepLinkParams = {
 };
 
 /* Token Fetch Types */
-export type FetchTokenResponse = SetuResponseBase & {
-    readonly data: FetchTokenResponseData;
-};
-
-type FetchTokenResponseData = {
+export type FetchTokenResponseData = {
     readonly expiresIn: number;
     readonly token: string;
 };
@@ -125,7 +142,7 @@ export type GetPaymentStatusResponseData = {
     readonly paymentLink: PaymentLink;
     readonly platformBillID: string;
     readonly receipt: Receipt;
-    readonly status: string;
+    readonly status: BillStatus;
     readonly transactionNote: string;
 };
 
@@ -149,4 +166,70 @@ type DestinationAccount = {
 
 export type TriggerMockPaymentResponseData = {
     readonly utr: string;
+};
+
+/* Refund Types */
+export type InitiateRefundData = {
+    readonly refunds: readonly RefundRequestItem[];
+};
+
+type InitiateRefundPartialAmount = {
+    readonly refundType: "PARTIAL";
+    readonly refundAmount: number;
+};
+
+type InitiateRefundFullAmount = {
+    readonly refundType: "FULL";
+};
+
+export type InitiateRefundAmount = InitiateRefundPartialAmount | InitiateRefundFullAmount;
+
+export type RefundRequestItem = InitiateRefundAmount & {
+    readonly seqNo: number;
+    readonly identifier: string;
+    readonly identifierType: "BILL_ID";
+    readonly deductions?: readonly Deduction[];
+};
+
+export type Deduction = {
+    readonly account: Account;
+    readonly split: Split;
+};
+
+export type InitiateRefundResponseData = {
+    readonly batchID: string;
+    readonly refunds: readonly RefundResponseDataItem[];
+};
+
+type RefundResponseErrorData = {
+    readonly code: string;
+    readonly detail: string;
+    readonly title: string;
+};
+
+type RefundStatus = "Created" | "MarkedForRefund" | "QueuedForRefund" | "Rejected" | "Initiated";
+
+export type RefundResponseSuccessData = {
+    readonly id: string;
+    readonly billID: string;
+    readonly transactionRefID: string;
+    readonly status: RefundStatus;
+    readonly amount: Amount;
+    readonly deductions: readonly Deduction[];
+    readonly initiatedAt?: string;
+};
+
+type RefundResponseDataItem =
+    | ({
+          readonly success: true;
+          readonly seqNo: number;
+      } & RefundResponseSuccessData)
+    | ({
+          readonly success: false;
+          readonly seqNo: number;
+      } & RefundResponseErrorData);
+
+export type BatchRefundStatusResponseData = {
+    readonly batchID: string;
+    readonly refunds: readonly RefundResponseSuccessData[];
 };

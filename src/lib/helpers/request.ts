@@ -1,8 +1,36 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 import { getJWTToken, getOAuthToken } from "./auth";
-import { API, SetuUPIDeepLinkParams } from "./types";
+import { API, SetuError, SetuResponseBase, SetuUPIDeepLinkParams } from "./types";
+
+const genericSetuError: SetuError = {
+    code: "unknown-error",
+    detail: "Something went wrong. Please try again in sometime.",
+    docURL: "",
+    title: "Unknown error",
+    errors: [],
+    traceID: "",
+};
+
+const setuSuccessHandler = (response: AxiosResponse<unknown>) => {
+    return response.data;
+};
+
+const setuErrorHandler = (error: AxiosError<SetuResponseBase<unknown>>) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        const errorData = error.response.data;
+        if (errorData.error) {
+            return Promise.reject(errorData.error);
+        } else {
+            return Promise.reject(genericSetuError);
+        }
+    } else if (error.response) {
+        return Promise.reject(error.response.data.error);
+    } else {
+        return Promise.reject(genericSetuError);
+    }
+};
 
 export const getAxiosInstance = (params: SetuUPIDeepLinkParams) => {
     // eslint-disable-next-line functional/no-let
@@ -26,6 +54,8 @@ export const getAxiosInstance = (params: SetuUPIDeepLinkParams) => {
             headers: { ...config.headers, Authorization: token },
         };
     });
+
+    collectAxiosInstance.interceptors.response.use(setuSuccessHandler, setuErrorHandler);
 
     const refreshAuth = async (failedRequest: AxiosError): Promise<string> => {
         token = await getOAuthToken(params.mode, params.schemeID, params.secret);

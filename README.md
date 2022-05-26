@@ -65,7 +65,7 @@ const paymentLinkBody = {
         parts: [
             {
                 account: {
-                    id: "Biller-External-002",
+                    id: "987654321",
                     ifsc: "KKBK0000001",
                 },
                 remarks: "EXACT sample split",
@@ -76,7 +76,7 @@ const paymentLinkBody = {
             },
         ],
         primaryAccount: {
-            id: "Biller-External-001",
+            id: "123456789",
             ifsc: "KKBK0000001",
         },
     },
@@ -105,6 +105,54 @@ const data = await upidl.triggerMockPayment({
 
 ```ts
 const data = await upiDL.expireBill("891365293916423373");
+```
+
+### Initiate refunds
+
+```ts
+const data = await upiDL.initiateRefund({
+    refunds: [
+        {
+            identifier: platformBillID,
+            identifierType: "BILL_ID",
+            refundType: "FULL",
+            deductions: [
+                {
+                    account: {
+                        id: "123456789",
+                        ifsc: "KKBK0000001",
+                    },
+                    split: {
+                        unit: "INR",
+                        value: 10000,
+                    },
+                },
+                {
+                    account: {
+                        id: "987654321",
+                        ifsc: "KKBK0000001",
+                    },
+                    split: {
+                        unit: "INR",
+                        value: 10000,
+                    },
+                },
+            ],
+        },
+    ],
+});
+```
+
+### Get refund batch status
+
+```ts
+const data = await upiDL.getRefundBatchStatus(initiateRefundResponse.batchID);
+```
+
+### Get individual refund status
+
+```ts
+const data = await upiDL.getRefundStatus(getRefundBatchStatusResponse.refunds[0].id);
 ```
 
 ## Contributing
