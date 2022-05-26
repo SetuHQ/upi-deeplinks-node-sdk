@@ -3,7 +3,7 @@ import {
     CreatePaymentLinkResponseData,
     Deduction,
     GetPaymentStatusResponseData,
-    InitiateRefundAmount,
+    InitiateRefundAmountParams,
     InitiateRefundResponseData,
     RefundResponseSuccessData,
     Settlement,
@@ -40,7 +40,7 @@ export type InitiateRefundParams = {
     readonly refunds: readonly RefundRequest[];
 };
 
-type RefundRequest = InitiateRefundAmount & {
+type RefundRequest = InitiateRefundAmountParams & {
     readonly identifier: string;
     readonly identifierType: "BILL_ID";
     readonly deductions?: readonly Deduction[];
@@ -55,4 +55,15 @@ export type SetuUPIDeepLinkInstance = {
     readonly getRefundBatchStatus: (batchID: string) => Promise<BatchRefundStatusResponseData>;
     readonly getRefundStatus: (refundID: string) => Promise<RefundResponseSuccessData>;
     readonly triggerMockPayment: (body: TriggerMockPaymentParams) => Promise<TriggerMockPaymentResponseData>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    readonly isSetuError: (err: any) => err is SetuError;
+};
+
+export type SetuError = {
+    readonly code: string;
+    readonly detail: string;
+    readonly docURL: string;
+    readonly title: string;
+    readonly errors: readonly unknown[];
+    readonly traceID: string;
 };

@@ -1,4 +1,4 @@
-import { AmountExactness } from "../types";
+import { AmountExactness, SetuError } from "../types";
 
 /* Base Types */
 export enum SetuEnv {
@@ -19,15 +19,6 @@ export enum API {
     EXPIRE_BILL = "/utilities/bills/%s/expire",
     REPORTS_BASE = "/reports",
 }
-
-export type SetuError = {
-    readonly code: string;
-    readonly detail: string;
-    readonly docURL: string;
-    readonly title: string;
-    readonly errors: readonly unknown[];
-    readonly traceID: string;
-};
 
 export type SetuResponseBase<T> = {
     readonly status: number;
@@ -173,16 +164,22 @@ export type InitiateRefundData = {
     readonly refunds: readonly RefundRequestItem[];
 };
 
-type InitiateRefundPartialAmount = {
+type InitiateRefundPartialAmountParams = {
     readonly refundType: "PARTIAL";
     readonly refundAmount: number;
+};
+
+type InitiateRefundPartialAmount = {
+    readonly refundType: "PARTIAL";
+    readonly refundAmount: Amount;
 };
 
 type InitiateRefundFullAmount = {
     readonly refundType: "FULL";
 };
 
-export type InitiateRefundAmount = InitiateRefundPartialAmount | InitiateRefundFullAmount;
+export type InitiateRefundAmountParams = InitiateRefundPartialAmountParams | InitiateRefundFullAmount;
+type InitiateRefundAmount = InitiateRefundPartialAmount | InitiateRefundFullAmount;
 
 export type RefundRequestItem = InitiateRefundAmount & {
     readonly seqNo: number;

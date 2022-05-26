@@ -21,7 +21,7 @@ const sleep = (ms: number) => {
 };
 
 // eslint-disable-next-line functional/prefer-readonly-type
-const test = avaTest as TestInterface<{ upiDL: SetuUPIDeepLinkInstance }>;
+const test = avaTest as TestInterface<{ upiDL: SetuUPIDeepLinkInstance; v1UPIDL: SetuUPIDeepLinkInstance }>;
 
 test.before((t) => {
     const upiDL = SetuUPIDeepLink({
@@ -32,6 +32,15 @@ test.before((t) => {
         authType: "OAUTH",
     });
     t.context.upiDL = upiDL;
+
+    const v1UPIDL = SetuUPIDeepLink({
+        schemeID: "5bf4376b-6008-43c8-8ce0-a5ea196e3091",
+        secret: "9975fd99-d5ed-416a-9963-5d113dc80582",
+        productInstanceID: "861023031961584801",
+        mode: "SANDBOX",
+        authType: "JWT",
+    });
+    t.context.v1UPIDL = v1UPIDL;
 });
 
 test("Create and make payment for DL", async (t) => {
@@ -101,6 +110,43 @@ test("Make payment for DL and initiate refund", async (t) => {
             {
                 identifier: platformBillID,
                 identifierType: "BILL_ID",
+                refundType: "PARTIAL",
+                refundAmount: 10000,
+                deductions: [
+                    {
+                        account: merchantAccount,
+                        split: {
+                            unit: "INR",
+                            value: 5000,
+                        },
+                    },
+                    {
+                        account: primaryAccount,
+                        split: {
+                            unit: "INR",
+                            value: 5000,
+                        },
+                    },
+                ],
+            },
+        ],
+    });
+
+    t.true(
+        initiateRefundResponse.refunds[0].success === true && initiateRefundResponse.refunds[0].status === "Created"
+    );
+
+    const getRefundBatchStatusResponse = await upiDL.getRefundBatchStatus(initiateRefundResponse.batchID);
+    t.is(getRefundBatchStatusResponse.refunds[0].billID, platformBillID);
+
+    const getRefundStatusResponse = await upiDL.getRefundStatus(getRefundBatchStatusResponse.refunds[0].id);
+    t.is(getRefundStatusResponse.billID, platformBillID);
+
+    const newInitiateRefundResponse = await upiDL.initiateRefund({
+        refunds: [
+            {
+                identifier: platformBillID,
+                identifierType: "BILL_ID",
                 refundType: "FULL",
                 deductions: [
                     {
@@ -122,19 +168,11 @@ test("Make payment for DL and initiate refund", async (t) => {
         ],
     });
 
-    t.true(
-        initiateRefundResponse.refunds[0].success === true && initiateRefundResponse.refunds[0].status === "Created"
-    );
-
-    const getRefundBatchStatusResponse = await upiDL.getRefundBatchStatus(initiateRefundResponse.batchID);
-    t.is(getRefundBatchStatusResponse.refunds[0].billID, platformBillID);
-
-    const getRefundStatusResponse = await upiDL.getRefundStatus(getRefundBatchStatusResponse.refunds[0].id);
-    t.is(getRefundStatusResponse.billID, platformBillID);
+    t.true(newInitiateRefundResponse.refunds[0].success === false);
 });
 
-test("Create and expire DL", async (t) => {
-    const { upiDL } = t.context;
+test("Create and expire DL using V1 auth", async (t) => {
+    const { v1UPIDL: upiDL } = t.context;
 
     const paymentLinkBody = {
         amountValue: 20000,
@@ -150,4 +188,50 @@ test("Create and expire DL", async (t) => {
 
     const paymentStatusResponse = await upiDL.getPaymentStatus(newPlatformBillID);
     t.is(paymentStatusResponse.status, "BILL_EXPIRED");
+});
+
+test("Create DL using invalid keys", async (t) => {
+    const upiDL = SetuUPIDeepLink({
+        schemeID: "invalid-scheme-id",
+        secret: "invalid-secret",
+        productInstanceID: "861023031961584801",
+        mode: "SANDBOX",
+        authType: "OAUTH",
+    });
+
+    try {
+        const paymentLinkBody = {
+            amountValue: 20000,
+            billerBillID: "918147077472",
+            amountExactness: "EXACT" as AmountExactness,
+        };
+        await upiDL.createPaymentLink(paymentLinkBody);
+    } catch (err) {
+        if (upiDL.isSetuError(err)) {
+            t.is(err.code, "invalid-api-key");
+        }
+    }
+});
+
+test.skip("Refresh keys automatically", async (t) => {
+    const { upiDL } = t.context;
+    t.plan(5);
+
+    // eslint-disable-next-line functional/no-loop-statement, functional/no-let
+    for (let i = 0; i < 5; ++i) {
+        try {
+            const paymentLinkBody = {
+                amountValue: 20000,
+                billerBillID: "918147077472",
+                amountExactness: "EXACT" as AmountExactness,
+            };
+            const createPaymentLinkResponse = await upiDL.createPaymentLink(paymentLinkBody);
+            t.is(createPaymentLinkResponse.paymentLink.upiID, "refundtest@kaypay");
+            await sleep(15000);
+        } catch (err) {
+            if (upiDL.isSetuError(err)) {
+                t.log("This should not happen");
+            }
+        }
+    }
 });

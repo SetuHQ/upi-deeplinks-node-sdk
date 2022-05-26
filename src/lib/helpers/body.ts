@@ -41,7 +41,9 @@ const initiateRefund = ({ refunds }: InitiateRefundParams): InitiateRefundData =
                     identifierType,
                     deductions,
                     refundType: params.refundType,
-                    ...(params.refundType === "PARTIAL" && { refundAmount: params.refundAmount }),
+                    ...(params.refundType === "PARTIAL" && {
+                        refundAmount: { currencyCode: "INR", value: params.refundAmount },
+                    }),
                 } as RefundRequestItem)
         ),
     };

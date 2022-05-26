@@ -1,6 +1,8 @@
+import { AxiosError } from "axios";
+
 import { bodyHelpers } from "./helpers/body";
 import { getURLPath } from "./helpers/endpoint";
-import { getAxiosInstance } from "./helpers/request";
+import { getAxiosInstance, setuErrorHandler } from "./helpers/request";
 import {
     API,
     BatchRefundStatusResponseData,
@@ -15,6 +17,7 @@ import {
 import {
     CreatePaymentLinkParams,
     InitiateRefundParams,
+    SetuError,
     SetuUPIDeepLinkInstance,
     TriggerMockPaymentParams,
 } from "./types";
@@ -24,59 +27,89 @@ export const SetuUPIDeepLink = (params: SetuUPIDeepLinkParams): SetuUPIDeepLinkI
 
     // Payment Link APIs
     const createPaymentLink = async (body: CreatePaymentLinkParams): Promise<CreatePaymentLinkResponseData> => {
-        const { data } = await collectAxiosInstance.post<
-            CreatePaymentLinkResponseData,
-            SetuResponseBase<CreatePaymentLinkResponseData>
-        >(getURLPath(params.mode, params.authType, API.PAYMENT_LINK_BASE), bodyHelpers.createPaymentLink(body));
-        return data;
+        try {
+            const { data: response } = await collectAxiosInstance.post<SetuResponseBase<CreatePaymentLinkResponseData>>(
+                getURLPath(params.mode, params.authType, API.PAYMENT_LINK_BASE),
+                bodyHelpers.createPaymentLink(body)
+            );
+            return response.data;
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
     };
 
     const getPaymentStatus = async (platformBillID: string): Promise<GetPaymentStatusResponseData> => {
-        const { data } = await collectAxiosInstance.get<
-            GetPaymentStatusResponseData,
-            SetuResponseBase<GetPaymentStatusResponseData>
-        >(`${getURLPath(params.mode, params.authType, API.PAYMENT_LINK_BASE)}/${platformBillID}`);
-        return data;
+        try {
+            const { data: response } = await collectAxiosInstance.get<SetuResponseBase<GetPaymentStatusResponseData>>(
+                `${getURLPath(params.mode, params.authType, API.PAYMENT_LINK_BASE)}/${platformBillID}`
+            );
+            return response.data;
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
     };
 
     const expireBill = async (platformBillID: string): Promise<void> => {
-        await collectAxiosInstance.post<never, SetuResponseBase<never>>(
-            getURLPath(params.mode, params.authType, API.EXPIRE_BILL).replace("%s", platformBillID)
-        );
+        try {
+            await collectAxiosInstance.post<SetuResponseBase<never>>(
+                getURLPath(params.mode, params.authType, API.EXPIRE_BILL).replace("%s", platformBillID)
+            );
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
     };
 
     // Refund APIs
     const initiateRefund = async (body: InitiateRefundParams): Promise<InitiateRefundResponseData> => {
-        const { data } = await collectAxiosInstance.post<
-            InitiateRefundResponseData,
-            SetuResponseBase<InitiateRefundResponseData>
-        >(`${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/batch`, bodyHelpers.initiateRefund(body));
-        return data;
+        try {
+            const { data: response } = await collectAxiosInstance.post<SetuResponseBase<InitiateRefundResponseData>>(
+                `${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/batch`,
+                bodyHelpers.initiateRefund(body)
+            );
+            return response.data;
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
     };
 
     const getRefundBatchStatus = async (batchID: string): Promise<BatchRefundStatusResponseData> => {
-        const { data } = await collectAxiosInstance.get<
-            BatchRefundStatusResponseData,
-            SetuResponseBase<BatchRefundStatusResponseData>
-        >(`${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/batch/${batchID}`);
-        return data;
+        try {
+            const { data: response } = await collectAxiosInstance.get<SetuResponseBase<BatchRefundStatusResponseData>>(
+                `${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/batch/${batchID}`
+            );
+            return response.data;
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
     };
 
     const getRefundStatus = async (refundID: string): Promise<RefundResponseSuccessData> => {
-        const { data } = await collectAxiosInstance.get<
-            RefundResponseSuccessData,
-            SetuResponseBase<RefundResponseSuccessData>
-        >(`${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/${refundID}`);
-        return data;
+        try {
+            const { data: response } = await collectAxiosInstance.get<SetuResponseBase<RefundResponseSuccessData>>(
+                `${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/${refundID}`
+            );
+            return response.data;
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
     };
 
     // Sandbox testing helper APIs
     const triggerMockPayment = async (body: TriggerMockPaymentParams): Promise<TriggerMockPaymentResponseData> => {
-        const { data } = await collectAxiosInstance.post<
-            TriggerMockPaymentResponseData,
-            SetuResponseBase<TriggerMockPaymentResponseData>
-        >(getURLPath(params.mode, params.authType, API.TRIGGER_MOCK_PAYMENT), bodyHelpers.triggerMockPayment(body));
-        return data;
+        try {
+            const { data: response } = await collectAxiosInstance.post<
+                SetuResponseBase<TriggerMockPaymentResponseData>
+            >(getURLPath(params.mode, params.authType, API.TRIGGER_MOCK_PAYMENT), bodyHelpers.triggerMockPayment(body));
+            return response.data;
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
+    };
+
+    // Helper methods
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isSetuError = (err: any): err is SetuError => {
+        return typeof err.code === "string" && typeof err.detail === "string";
     };
 
     return {
@@ -87,5 +120,6 @@ export const SetuUPIDeepLink = (params: SetuUPIDeepLinkParams): SetuUPIDeepLinkI
         getRefundBatchStatus,
         getRefundStatus,
         triggerMockPayment,
+        isSetuError,
     };
 };
