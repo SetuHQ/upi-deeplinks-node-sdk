@@ -7,7 +7,7 @@
 [![Size](https://img.shields.io/bundlephobia/min/@setu/upi-deep-links?color=%2336A168)](https://bundlephobia.com/package/@setu/upi-deep-links)
 [![License](https://img.shields.io/npm/l/@setu/upi-deep-links?color=%23FE90A0)](LICENSE.md)
 
-<img src="docs/deeplinks.png" alt="SDK in action" width="100%">
+<img src="https://raw.githubusercontent.com/SetuHQ/node-upi-deep-links/master/docs/deeplinks.png" alt="SDK in action" width="100%">
 
 ## Getting started
 
