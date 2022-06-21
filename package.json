@@ -80,6 +80,7 @@
         "LICENSE",
         "README.md"
     ],
+    "sideEffects": false,
     "ava": {
         "failFast": true,
         "timeout": "90s",
