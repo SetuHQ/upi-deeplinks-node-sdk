@@ -1,6 +1,6 @@
 {
     "name": "@setu/upi-deep-links",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "description": "NPM package to connect to Setu's UPI Deep Link APIs",
     "main": "build/main/index.js",
     "typings": "build/main/index.d.ts",
