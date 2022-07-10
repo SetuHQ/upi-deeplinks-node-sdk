@@ -17,6 +17,7 @@ import {
 import {
     CreatePaymentLinkParams,
     InitiateRefundParams,
+    RefundStatusIdentifierType,
     SetuError,
     SetuUPIDeepLinkInstance,
     TriggerMockPaymentParams,
@@ -72,10 +73,27 @@ export const SetuUPIDeepLink = (params: SetuUPIDeepLinkParams): SetuUPIDeepLinkI
         }
     };
 
+    /**
+     * @deprecated This method is replaced by {@link getRefundStatusByIdentifier}
+     */
     const getRefundBatchStatus = async (batchID: string): Promise<BatchRefundStatusResponseData> => {
         try {
             const { data: response } = await collectAxiosInstance.get<SetuResponseBase<BatchRefundStatusResponseData>>(
                 `${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/batch/${batchID}`
+            );
+            return response.data;
+        } catch (err) {
+            return setuErrorHandler(err as AxiosError<SetuResponseBase<unknown>>);
+        }
+    };
+
+    const getRefundStatusByIdentifier = async (
+        identifierType: RefundStatusIdentifierType,
+        identifierValue: string
+    ): Promise<BatchRefundStatusResponseData> => {
+        try {
+            const { data: response } = await collectAxiosInstance.get<SetuResponseBase<BatchRefundStatusResponseData>>(
+                `${getURLPath(params.mode, params.authType, API.REFUND_BASE)}/${identifierType}/${identifierValue}`
             );
             return response.data;
         } catch (err) {
@@ -118,6 +136,7 @@ export const SetuUPIDeepLink = (params: SetuUPIDeepLinkParams): SetuUPIDeepLinkI
         expireBill,
         initiateRefund,
         getRefundBatchStatus,
+        getRefundStatusByIdentifier,
         getRefundStatus,
         triggerMockPayment,
         isSetuError,
