@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/SetuHQ/node-upi-deep-links/compare/v2.1.3...v3.0.0) (2022-07-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** move to generic refund status API
+
+### Features
+
+* **api:** move to generic refund status API ([34f71d1](https://github.com/SetuHQ/node-upi-deep-links/commit/34f71d16fea3a185ee0c98703ea9f06a67c82259))
+
 ### [2.1.3](https://github.com/SetuHQ/node-upi-deep-links/compare/v2.1.2...v2.1.3) (2022-06-21)
 
 ### [2.1.2](https://github.com/SetuHQ/node-upi-deep-links/compare/v2.1.0...v2.1.2) (2022-06-21)
