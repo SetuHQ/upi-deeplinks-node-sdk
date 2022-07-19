@@ -46,6 +46,8 @@ type RefundRequest = InitiateRefundAmountParams & {
     readonly deductions?: readonly Deduction[];
 };
 
+export type RefundStatusIdentifierType = "batch" | "bill";
+
 /* Global */
 export type SetuUPIDeepLinkInstance = {
     readonly createPaymentLink: (body: CreatePaymentLinkParams) => Promise<CreatePaymentLinkResponseData>;
@@ -53,6 +55,10 @@ export type SetuUPIDeepLinkInstance = {
     readonly expireBill: (platformBillID: string) => Promise<void>;
     readonly initiateRefund: (body: InitiateRefundParams) => Promise<InitiateRefundResponseData>;
     readonly getRefundBatchStatus: (batchID: string) => Promise<BatchRefundStatusResponseData>;
+    readonly getRefundStatusByIdentifier: (
+        identifierType: RefundStatusIdentifierType,
+        identifierValue: string
+    ) => Promise<BatchRefundStatusResponseData>;
     readonly getRefundStatus: (refundID: string) => Promise<RefundResponseSuccessData>;
     readonly triggerMockPayment: (body: TriggerMockPaymentParams) => Promise<TriggerMockPaymentResponseData>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

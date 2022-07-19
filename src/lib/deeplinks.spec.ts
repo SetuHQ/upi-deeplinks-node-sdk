@@ -139,6 +139,15 @@ test("Make payment for DL and initiate refund", async (t) => {
     const getRefundBatchStatusResponse = await upiDL.getRefundBatchStatus(initiateRefundResponse.batchID);
     t.is(getRefundBatchStatusResponse.refunds[0].billID, platformBillID);
 
+    const getRefundStatusByBatchResponse = await upiDL.getRefundStatusByIdentifier(
+        "batch",
+        initiateRefundResponse.batchID
+    );
+    t.is(getRefundStatusByBatchResponse.refunds[0].billID, platformBillID);
+
+    const getRefundStatusByBillResponse = await upiDL.getRefundStatusByIdentifier("bill", platformBillID);
+    t.is(getRefundStatusByBillResponse.refunds[0].status, "Created");
+
     const getRefundStatusResponse = await upiDL.getRefundStatus(getRefundBatchStatusResponse.refunds[0].id);
     t.is(getRefundStatusResponse.billID, platformBillID);
 

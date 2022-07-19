@@ -227,6 +227,5 @@ type RefundResponseDataItem =
       } & RefundResponseErrorData);
 
 export type BatchRefundStatusResponseData = {
-    readonly batchID: string;
     readonly refunds: readonly RefundResponseSuccessData[];
 };
