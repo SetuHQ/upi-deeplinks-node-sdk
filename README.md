@@ -11,7 +11,7 @@
 
 ## Getting started
 
-[SDK documentation →](https://opensource.setu.co/node-upi-deep-links)  
+[SDK documentation →](https://setuhq.github.io/upi-deeplinks-node-sdk/)  
 [Full documentation →](https://docs.setu.co/payments/upi-deeplinks)  
 [Product overview →](https://setu.co/payments/upi-deeplinks)
 
